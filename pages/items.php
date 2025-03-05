@@ -9,7 +9,6 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// Fetch All Items
 $sql = "SELECT * FROM items";
 $stmt = $pdo->query($sql);
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
