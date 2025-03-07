@@ -18,7 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Error: User ID does not exist!";
     }
 
-    // Check if item_id exists
     $stmt = $pdo->prepare("SELECT item_id FROM items WHERE item_id = ?");
     $stmt->execute([$item_id]);
     if ($stmt->rowCount() == 0) {
@@ -50,7 +49,6 @@ if (isset($_GET['delete'])) {
     }
 }
 
-// Fetch Borrowings
 $sql = "SELECT b.borrow_id, u.full_name, i.item_name, b.borrow_date, b.due_date, b.status
         FROM borrowings b
         JOIN users u ON b.user_id = u.user_id
@@ -86,7 +84,6 @@ $borrowings = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         <?php endif; ?>
 
-        <!-- Insert Borrowing Form -->
         <form method="POST" class="mb-4">
             <div class="row">
                 <div class="col">
@@ -123,7 +120,7 @@ $borrowings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Borrow Date</th>
                     <th>Due Date</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -136,11 +133,8 @@ $borrowings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= htmlspecialchars($row['due_date']) ?></td>
                         <td><?= htmlspecialchars($row['status']) ?></td>
                         <td>
-                            <a href="borrowings.php?delete=<?= htmlspecialchars($row['borrow_id']) ?>" 
-                               class="btn btn-danger btn-sm" 
-                               onclick="return confirm('Are you sure you want to delete this record?')">
-                                Delete
-                            </a>
+                            <a href="update_borrowing.php?id=<?= htmlspecialchars($row['borrow_id']) ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="borrowings.php?delete=<?= htmlspecialchars($row['borrow_id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
